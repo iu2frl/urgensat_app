@@ -1,0 +1,14 @@
+call: IU3GNB
+info:
+  rig: UrgensatKit-V1.0
+  antenna: parabola
+  operator: Francesco
+macro:
+  cq: Cq Cq de iu3gnb iu3gnb k
+  bye: 73
+  test: test
+setup:
+  deamon_tx:
+    addr: 127.0.0.1
+    port: 5005
+    
