@@ -8,13 +8,7 @@ import logging
 from station.station_config import StationConfig
 import sys
 import helpers
-'''
-TODO
-+inserire la gestione comando station_info
-+usare le regex per matcher i comandi speciali
-+fare in modo che quando di manda macro il comando venga sostituito con il testo della macro
-+inserire logging degli errori
-'''
+
 class CommandHandler:
     def __init__(self,log_file,station_config,station):
         logging.basicConfig(filename=log_file, filemode='w')
@@ -37,7 +31,7 @@ class CommandHandler:
             
             special_command_found = True
         if raw_text=="exit()":
-            helpers.terminate()
+            helpers.terminate(self.station)
         
         if not(special_command_found):
             self.station.send_message(raw_text)

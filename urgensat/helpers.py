@@ -9,6 +9,8 @@ def setup():
     
     print("Initial setup:")
 
+    print("[*] starting logger:")
+
     #choose and load config file
     available_file = StationConfig.load_available_config_file(".")
     count = 1
@@ -27,22 +29,24 @@ def setup():
     print("\n[*] loading "+available_file[config_choosed-1]+" ...")
     config = StationConfig(available_file[config_choosed-1])
     
-    print("[*] setting up the station")
+    print("[*] starting the station...")
     station = Station.build_from_config(config)
+    station.deamon_rx.start()
 
     print("[*] preparing command handler")
     command_handler = CommandHandler("urgensat.log",config,station)
-    
-    print("[*] starting deamons")
-    #far partire server per ricezione pacchetti
 
     print("\n")
 
     return command_handler,station,config
 
-def terminate():
+def terminate(station):
     print("\nTerminating session:")
     
-    print("[*] stopping deamons")
+    print("[*] stopping station...")
+    station.deamon_rx.stop()
+    station.deamon_rx.join()
+
+    print("[*] terminating logger...")
     
     sys.exit()
