@@ -10,10 +10,10 @@ import sys
 import helpers
 
 class CommandHandler:
-    def __init__(self,log_file,station_config,station):
-        logging.basicConfig(filename=log_file, filemode='w')
+    def __init__(self,station_config,station):
         self.station = station
         self.station_config = station_config
+        self.logger = logging.getLogger("handler")
     
     def parse_command(self,raw_text):
         special_command_found = False
@@ -24,14 +24,24 @@ class CommandHandler:
             try:
                 macros = self.station_config.raw_config["macro"]
                 macro_text = macros[macro_name]
+                
+                if macro_text is None: 
+                    raise Exception('Macro text blank')
+               
                 self.station.send_message(macro_text)
-                print("\n[*] sended macro "+macro_name+"\n")
+                
+                print()
+                self.logger.info("Sended macro '"+macro_name+"'")
+                print()
             except:
-                print("\n[*] macro not founded, please check "+self.station.call+".yaml\n")
+                print()
+                self.logger.warning("Unable to send '"+macro_name+"' macro", exc_info=True)
+                print()
+                #print("\n[*]  not founded, please check "+self.station.call+".yaml\n")
             
             special_command_found = True
         if raw_text=="exit()":
-            helpers.terminate(self.station)
+            helpers.terminate()
         
         if not(special_command_found):
             self.station.send_message(raw_text)

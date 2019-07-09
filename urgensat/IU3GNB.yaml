@@ -11,4 +11,6 @@ setup:
   deamon_tx:
     addr: 127.0.0.1
     port: 5005
-    
+  deamon_rx:
+    addr: 127.0.0.1
+    port: 5006
