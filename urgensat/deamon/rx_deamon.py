@@ -1,14 +1,19 @@
 import socket,sys
 from threading import Thread
 from handler.message_handler import MessageHandler
+from station.packet import Packet
 import logging
+import helpers
 
 class RxDeamon(Thread):
-    def __init__(self,addr,port,message_handler):
+    def __init__(self,addr,port,message_handler,log_packet):
         Thread.__init__(self)
         self.addr = addr
         self.port = port
         self.logger = logging.getLogger("deamon")
+
+        self.packet_logger = logging.getLogger("packet")
+        self.log_packet = log_packet
         
         self.message_handler = message_handler
         try:
@@ -17,7 +22,7 @@ class RxDeamon(Thread):
             self.sock.settimeout(0.5)
         except Exception as e:
             self.logger.exception("Unable to create the rx server")
-            sys.exit()
+            helpers.terminate()
         
         self.kill = False
 
@@ -25,12 +30,17 @@ class RxDeamon(Thread):
         while not self.kill:
             try:
                 data, addr = self.sock.recvfrom(1024)
-                self.message_handler.handle_message(data.decode('ascii'))
+                #self.message_handler.handle_message(data.decode('ascii'))
+                packet = Packet.decode(data)
+                
+                if self.log_packet:
+                    self.packet_logger.debug(" RX - "+str(packet.__dict__))
+                
+                self.message_handler.handle_message(packet)
             except socket.timeout:
                 pass
             except Exception as e:
-                self.logger.exception("Bad rx socket configuration")
-                sys.exit()
+                self.logger.exception("Error during packet reception")
             
 
     def stop(self):

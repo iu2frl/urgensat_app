@@ -1,13 +1,14 @@
 ### Generale
 
 - [x] inserire logging degli eventi
-- [ ] inserire logging opzionale dei pacchetti
+- [x] inserire logging opzionale dei pacchetti
 - [x] creare message handler
-- [ ] modificare codifica/decodifica dei messaggi in modo che si basi su MessagePack https://msgpack.org/
+- [x] modificare codifica/decodifica dei messaggi in modo che si basi su MessagePack https://msgpack.org/
 - [ ] creare io_controller per il controllo a distanza di attuatori e sensori
 - [ ] creare versione full screen CLI
 - [ ] inserire avvio del core
 - [ ] creare script di installazione
+- [ ] inserire la possibilità di inviare file
 - [ ] scrivere versione multithreading
 
 ### Command handler

@@ -1,21 +1,21 @@
 from deamon.tx_deamon import TxDeamon
 from deamon.rx_deamon import RxDeamon
-import logging,helpers
-
-STANDARD_MESSAGE = "{}> {}"   
+from station.packet import Packet
+import logging,helpers 
 
 class Station:
-    def __init__(self,call,deamon_tx,deamon_rx,message_handler,info):
-        self.deamon_tx = TxDeamon(deamon_tx["addr"],deamon_tx["port"])
-        self.deamon_rx = RxDeamon(deamon_rx["addr"],deamon_rx["port"],message_handler)
+    def __init__(self,call,deamon_tx,deamon_rx,message_handler,info,log_packet):
+        self.deamon_tx = TxDeamon(deamon_tx["addr"],deamon_tx["port"],log_packet)
+        self.deamon_rx = RxDeamon(deamon_rx["addr"],deamon_rx["port"],message_handler,log_packet)
         self.call = call
         self.logger = logging.getLogger("station")
 
-    def format_message(self,message):
-        return STANDARD_MESSAGE.format(self.call,message)
-
-    def send_message(self,message):
-        self.deamon_tx.send_packet(self.format_message(message))
+    def send_message(self,message,dest):
+        self.send_packet(message,"plain_text",dest)
+    
+    def send_packet(self,message,category,dest):
+        p = Packet(self.call,dest,message,category)
+        self.deamon_tx.send_packet(p)
     
     def build_from_config(station_config,message_handler):
         logger = logging.getLogger("station")
@@ -45,5 +45,10 @@ class Station:
         except Exception as e:
             logger.exception("Error parsing station config")
             helpers.terminate()
+        
+        try:
+            log_packet = station_config.raw_config["log_packet"]
+        except:
+            log_packet = False
 
-        return Station(call,deamon_tx,deamon_rx,message_handler,{})
+        return Station(call,deamon_tx,deamon_rx,message_handler,{},log_packet)

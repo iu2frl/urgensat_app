@@ -6,6 +6,7 @@ special_keys = [
 
 import logging
 from station.station_config import StationConfig
+from station.packet import Packet
 import sys
 import helpers
 
@@ -28,7 +29,7 @@ class CommandHandler:
                 if macro_text is None: 
                     raise Exception('Macro text blank')
                
-                self.station.send_message(macro_text)
+                self.station.send_message(macro_text,"")
                 
                 print()
                 self.logger.info("Sended macro '"+macro_name+"'")
@@ -44,4 +45,4 @@ class CommandHandler:
             helpers.terminate()
         
         if not(special_command_found):
-            self.station.send_message(raw_text)
+            self.station.send_message(raw_text,"")

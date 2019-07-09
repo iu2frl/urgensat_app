@@ -14,3 +14,4 @@ setup:
   deamon_rx:
     addr: 127.0.0.1
     port: 5006
+log_packet: no
