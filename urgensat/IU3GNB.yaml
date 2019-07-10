@@ -10,8 +10,15 @@ macro:
 setup:
   deamon_tx:
     addr: 127.0.0.1
-    port: 5005
+    port: 1234
   deamon_rx:
     addr: 127.0.0.1
     port: 5006
+  iot:
+    button:
+      pin: 12
+      mode: OUTPUT
+    led:
+      pin: 7
+      mode: INPUT
 log_packet: no
