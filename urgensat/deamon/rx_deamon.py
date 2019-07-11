@@ -17,8 +17,10 @@ class RxDeamon(Thread):
         
         self.message_handler = message_handler
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            #self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.bind((self.addr, self.port))
+            self.sock.listen(1)
             self.sock.settimeout(0.5)
         except Exception as e:
             self.logger.exception("Unable to create the rx server")
@@ -29,8 +31,9 @@ class RxDeamon(Thread):
     def run(self):
         while not self.kill:
             try:
-                data, addr = self.sock.recvfrom(1024)
-                #self.message_handler.handle_message(data.decode('ascii'))
+                connection, client_address = sock.accept()
+                #data, addr = self.sock.recvfrom(1024)
+                data = self.connection.recv(1024)
                 packet = Packet.decode(data)
                 
                 if self.log_packet:

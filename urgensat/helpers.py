@@ -75,10 +75,17 @@ def terminate():
     
     #print("[*] stopping station...")
     logger.info("Stopping station")
+    
+    #stopping rx deamon
     if station is not None:
         station.deamon_rx.stop()
         station.deamon_rx.join()
-
+    #stopping tx deamon
+    try:
+        station.deamon_tx.sock.close()
+    except:
+        pass
+    
     #print("[*] terminating logger...")
     logger.info("Stopping loggers")
     loggers = [logging.getLogger(name) for name in logging.root.manager.loggerDict]

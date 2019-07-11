@@ -4,9 +4,10 @@
 - [x] inserire logging opzionale dei pacchetti
 - [x] creare message handler
 - [x] modificare codifica/decodifica dei messaggi in modo che si basi su MessagePack https://msgpack.org/
+- [ ] convertire socket udp a tcp
 - [ ] creare io_controller per il controllo a distanza di attuatori e sensori
-- [ ] creare versione full screen CLI
 - [ ] inserire avvio del core
+- [ ] creare versione full screen CLI
 - [ ] creare script di installazione
 - [ ] inserire la possibilità di inviare file
 - [ ] scrivere versione multithreading
