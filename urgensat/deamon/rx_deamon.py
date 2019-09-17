@@ -31,9 +31,16 @@ class RxDeamon(Thread):
     def run(self):
         while not self.kill:
             try:
-                connection, client_address = sock.accept()
+                connection, client_address = self.sock.accept()
                 #data, addr = self.sock.recvfrom(1024)
-                data = self.connection.recv(1024)
+                end_of_packet_received = False
+                data = connection.recv(1024)
+
+                while(not(end_of_packet_received)):
+                    data = data + connection.recv(1024)
+                    if "}" in data.decode():
+                        end_of_packet_received = True
+
                 packet = Packet.decode(data)
                 
                 if self.log_packet:

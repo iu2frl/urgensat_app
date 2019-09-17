@@ -31,17 +31,19 @@ class Packet:
         logger = logging.getLogger("station")
     
         try:
-            encoded_packet = umsgpack.packb(json.dumps(packet.__dict__))
+            #encoded_packet = umsgpack.packb(json.dumps(packet.__dict__))
+            encoded_packet = json.dumps(packet.__dict__)
         except Exception as e:
             logger.exception("Unable to encode packet")
         
-        return encoded_packet
+        return encoded_packet.encode()
     
     def decode(packet):
         logger = logging.getLogger("station")
         
         try:
-            packet_dict = json.loads(umsgpack.unpackb(packet))
+            #packet_dict = json.loads(umsgpack.unpackb(packet))
+            packet_dict = json.loads(packet.decode())
             decoded_packet = Packet(packet_dict["sender"],packet_dict["dest"],packet_dict["message"],packet_dict["category"])
         except Exception as e:
             logger.exception("Unable to decode packet")
