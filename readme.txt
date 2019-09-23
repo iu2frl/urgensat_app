@@ -1,6 +1,6 @@
 setup:
 1) installare gnu radio
-	sudo apt-get install gnu-radio
+	https://wiki.analog.com/resources/tools-software/linux-software/gnuradio
 2) scaricare cartella del progetto 
 	git clone https://fdegiudici@bitbucket.org/urgensat/urgensat_app.git
 3) creare venv nella cartella urgensat_app/urgensat 
