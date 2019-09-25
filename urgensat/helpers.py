@@ -80,6 +80,7 @@ def terminate():
     if station is not None:
         station.deamon_rx.stop()
         station.deamon_rx.join()
+    
     #stopping tx deamon
     try:
         station.deamon_tx.sock.close()

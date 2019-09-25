@@ -13,7 +13,7 @@ setup:
     port: 5001
   deamon_rx:
     addr: 127.0.0.1
-    port: 1239
+    port: 1248
   iot:
     button:
       pin: 12

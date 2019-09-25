@@ -4,6 +4,7 @@ from handler.message_handler import MessageHandler
 from station.packet import Packet
 import logging
 import helpers
+import select
 
 class RxDeamon(Thread):
     def __init__(self,addr,port,message_handler,log_packet):
@@ -21,38 +22,46 @@ class RxDeamon(Thread):
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.bind((self.addr, self.port))
             self.sock.listen(1)
-            self.sock.settimeout(0.5)
-        except Exception as e:
+        except Exception:
             self.logger.exception("Unable to create the rx server")
             helpers.terminate()
         
         self.kill = False
 
     def run(self):
-        while not self.kill:
-            try:
-                connection, client_address = self.sock.accept()
-                #data, addr = self.sock.recvfrom(1024)
+        try:
+            connection, client_address = self.sock.accept()
+            connection.settimeout(0.1)
+            
+            while not self.kill:
+                data = b""
                 end_of_packet_received = False
-                data = connection.recv(1024)
-
-                while(not(end_of_packet_received)):
-                    data = data + connection.recv(1024)
+                
+                while not(end_of_packet_received):
+                    try:
+                        data = data + connection.recv(1024)
+                    except socket.timeout:
+                        if self.kill:
+                            break
+                        pass
+                    
                     if "}" in data.decode():
                         end_of_packet_received = True
-
-                packet = Packet.decode(data)
+                
+                if data!=b"" and not(self.kill):
+                    packet = Packet.decode(data)
+                    self.message_handler.handle_message(packet)
                 
                 if self.log_packet:
                     self.packet_logger.debug(" RX - "+str(packet.__dict__))
                 
-                self.message_handler.handle_message(packet)
-            except socket.timeout:
-                pass
-            except Exception as e:
-                self.logger.exception("Error during packet reception")
-            
+                
+        except Exception:
+            self.logger.exception("Error during packet reception")
+
+        self.sock.close()   
 
     def stop(self):
         self.logger.info("Stopping rx server")
         self.kill = True
+        
