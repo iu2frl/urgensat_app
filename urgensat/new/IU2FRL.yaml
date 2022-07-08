@@ -1,0 +1,24 @@
+call: IU2FRL
+info:
+  rig: UrgensatKit-V1.0
+  antenna: parabola
+  operator: Luca
+macro:
+  cq: Cq Cq de iu3gnb iu3gnb k
+  bye: 73
+  test: test
+setup:
+  deamon_tx:
+    addr: 127.0.0.1
+    port: 5002
+  deamon_rx:
+    addr: 127.0.0.1
+    port: 1249
+  iot:
+    button:
+      pin: 12
+      mode: OUTPUT
+    led:
+      pin: 7
+      mode: INPUT
+log_packet: no
