@@ -134,13 +134,18 @@ class top_block(gr.top_block, Qt.QWidget):
         	block_tags=False
         )
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_char*1, samp_rate,True)
-        self.blocks_tcp_server_sink_1 = blocks.tcp_server_sink(gr.sizeof_char*1, '', 1235, True)
         self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vcc((500, ))
         self.blks2_tcp_source_0_0_0 = grc_blks2.tcp_source(
         	itemsize=gr.sizeof_char*1,
         	addr='127.0.0.1',
         	port=5001,
         	server=True,
+        )
+        self.blks2_tcp_sink_0 = grc_blks2.tcp_sink(
+        	itemsize=gr.sizeof_char*1,
+        	addr='127.0.0.1',
+        	port=1238,
+        	server=False,
         )
         self.blks2_packet_encoder_0 = grc_blks2.packet_mod_b(grc_blks2.packet_encoder(
         		samples_per_symbol=1,
@@ -163,7 +168,7 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blks2_packet_decoder_0, 0), (self.blocks_tcp_server_sink_1, 0))
+        self.connect((self.blks2_packet_decoder_0, 0), (self.blks2_tcp_sink_0, 0))
         self.connect((self.blks2_packet_encoder_0, 0), (self.digital_gmsk_mod_0, 0))
         self.connect((self.blks2_tcp_source_0_0_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.blocks_multiply_const_vxx_1, 0), (self.channels_channel_model_0, 0))
