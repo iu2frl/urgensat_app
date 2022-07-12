@@ -5,6 +5,7 @@
 ## Dependencies
 - https://github.com/ghostop14/gr-grnet
 - see files requirements.txt
+  - sudo apt-get install libpcap-dev
 
 ## Features list
 ### General
