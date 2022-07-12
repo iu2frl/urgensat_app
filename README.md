@@ -2,6 +2,10 @@
 ## Software versions
 - GnuRadio 3.7.13.5
 
+## Dependencies
+- https://github.com/ghostop14/gr-grnet
+- see files requirements.txt
+
 ## Features list
 ### General
 - [x] inserire logging degli eventi
