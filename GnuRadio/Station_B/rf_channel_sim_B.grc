@@ -238,7 +238,7 @@
     <key>blks2_tcp_sink</key>
     <param>
       <key>addr</key>
-      <value>127.0.0.1</value>
+      <value>0.0.0.0</value>
     </param>
     <param>
       <key>alias</key>
@@ -289,7 +289,7 @@
     <key>blks2_tcp_source</key>
     <param>
       <key>addr</key>
-      <value>127.0.0.1</value>
+      <value>0.0.0.0</value>
     </param>
     <param>
       <key>alias</key>
