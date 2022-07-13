@@ -6,6 +6,8 @@
 # GNU Radio version: 3.7.13.5
 ##################################################
 
+from distutils.version import StrictVersion
+
 if __name__ == '__main__':
     import ctypes
     import sys
@@ -16,7 +18,8 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
-from PyQt4 import Qt
+from PyQt5 import Qt
+from PyQt5 import Qt, QtCore
 from gnuradio import blocks
 from gnuradio import channels
 from gnuradio import digital
@@ -56,7 +59,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_layout.addLayout(self.top_grid_layout)
 
         self.settings = Qt.QSettings("GNU Radio", "top_block")
-        self.restoreGeometry(self.settings.value("geometry").toByteArray())
+        self.restoreGeometry(self.settings.value("geometry", type=QtCore.QByteArray))
 
 
         ##################################################
@@ -134,18 +137,13 @@ class top_block(gr.top_block, Qt.QWidget):
         	block_tags=False
         )
         self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_char*1, samp_rate,True)
+        self.blocks_tcp_server_sink_0 = blocks.tcp_server_sink(gr.sizeof_char*1, '127.0.0.1', 1238, True)
         self.blocks_multiply_const_vxx_1_0 = blocks.multiply_const_vcc((500, ))
         self.blks2_tcp_source_0_0 = grc_blks2.tcp_source(
         	itemsize=gr.sizeof_char*1,
         	addr='0.0.0.0',
         	port=5002,
         	server=True,
-        )
-        self.blks2_tcp_sink_0 = grc_blks2.tcp_sink(
-        	itemsize=gr.sizeof_char*1,
-        	addr='0.0.0.0',
-        	port=1239,
-        	server=False,
         )
         self.blks2_packet_encoder_0_0 = grc_blks2.packet_mod_b(grc_blks2.packet_encoder(
         		samples_per_symbol=1,
@@ -168,7 +166,7 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blks2_packet_decoder_0_0, 0), (self.blks2_tcp_sink_0, 0))
+        self.connect((self.blks2_packet_decoder_0_0, 0), (self.blocks_tcp_server_sink_0, 0))
         self.connect((self.blks2_packet_encoder_0_0, 0), (self.digital_gmsk_mod_0_0, 0))
         self.connect((self.blks2_tcp_source_0_0, 0), (self.blocks_throttle_0_0, 0))
         self.connect((self.blocks_multiply_const_vxx_1_0, 0), (self.channels_channel_model_0_0, 0))
@@ -194,10 +192,6 @@ class top_block(gr.top_block, Qt.QWidget):
 
 def main(top_block_cls=top_block, options=None):
 
-    from distutils.version import StrictVersion
-    if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
-        style = gr.prefs().get_string('qtgui', 'style', 'raster')
-        Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
 
     tb = top_block_cls()
@@ -207,7 +201,7 @@ def main(top_block_cls=top_block, options=None):
     def quitting():
         tb.stop()
         tb.wait()
-    qapp.connect(qapp, Qt.SIGNAL("aboutToQuit()"), quitting)
+    qapp.aboutToQuit.connect(quitting)
     qapp.exec_()
 
 
