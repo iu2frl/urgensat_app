@@ -49,7 +49,8 @@ class RxDeamon(Thread):
                         end_of_packet_received = True
                 
                 if data!=b"" and not(self.kill):
-                    packet = Packet.decode(data)
+                    print(data)
+                    packet = Packet().decode(data)
                     self.message_handler.handle_message(packet)
                 
                 if self.log_packet:
