@@ -20,7 +20,11 @@ class CommandHandler:
         special_command_found = False
 
         if raw_text[:5]=="macro":
-            macro_name = raw_text[6:raw_text.index(')')]
+            try:
+                macro_name = raw_text[6:raw_text.index(')')]
+            except:
+                self.logger.info("Can't identify macro")
+                return
 
             try:
                 macros = self.station_config.raw_config["macro"]
@@ -32,13 +36,13 @@ class CommandHandler:
                 self.station.send_message(macro_text,"")
                 
                 print()
-                self.logger.info("Sended macro '"+macro_name+"'")
+                self.logger.info("Sending macro '"+macro_name+"'")
                 print()
             except:
                 print()
                 self.logger.warning("Unable to send '"+macro_name+"' macro", exc_info=True)
                 print()
-                #print("\n[*]  not founded, please check "+self.station.call+".yaml\n")
+                #print("\n[*]  not found, please check "+self.station.call+".yaml\n")
             
             special_command_found = True
         if raw_text=="exit()":

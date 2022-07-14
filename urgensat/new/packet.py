@@ -21,7 +21,8 @@ class Packet:
                 self.category = category
             else:  
                 #self.category = category_enum[category]
-                self.category = 0
+                #default a testo, da sistemare
+                self.category = 1
             
             self.message = message 
         except Exception as e:
