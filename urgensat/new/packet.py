@@ -20,7 +20,8 @@ class Packet:
             if isinstance(category, int):
                 self.category = category
             else:  
-                self.category = category_enum[category]
+                #self.category = category_enum[category]
+                self.category = 0
             
             self.message = message 
         except Exception as e:
@@ -38,6 +39,7 @@ class Packet:
         
         return encoded_packet.encode()
     
+    @staticmethod
     def decode(packet):
         logger = logging.getLogger("station")
         
