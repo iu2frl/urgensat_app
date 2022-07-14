@@ -23,7 +23,7 @@ class CommandHandler:
             try:
                 macro_name = raw_text[6:raw_text.index(')')]
             except:
-                self.logger.info("Can't identify macro")
+                self.logger.warning("Can't identify macro")
                 return
 
             try:
@@ -35,13 +35,10 @@ class CommandHandler:
                
                 self.station.send_message(macro_text,"")
                 
-                print()
                 self.logger.info("Sending macro '"+macro_name+"'")
-                print()
             except:
-                print()
-                self.logger.warning("Unable to send '"+macro_name+"' macro", exc_info=True)
-                print()
+                self.logger.warning("Unable to send '"+macro_name+"' macro")
+                #self.logger.warning("Unable to send '"+macro_name+"' macro", exc_info=True)
                 #print("\n[*]  not found, please check "+self.station.call+".yaml\n")
             
             special_command_found = True

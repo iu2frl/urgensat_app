@@ -40,7 +40,11 @@ def setup():
     config_choosed = 0
 
     while(config_choosed<1 or config_choosed>len(available_file)):
-        config_choosed = int(input("\n->config number[1-"+str(len(available_file))+"]: "))
+        try:
+            config_choosed = int(input("\n->config number[1-"+str(len(available_file))+"]: "))
+        except:
+            logger.warning("Invalid input")
+            terminate()
     
     print()
 
