@@ -1,32 +1,36 @@
 # urgensat_app
 ## Software versions
 - GnuRadio 3.7.13.5
+- Python 2.7
 
-## Dependencies
-- https://github.com/ghostop14/gr-grnet
-- see files requirements.txt
-  - sudo apt-get install libpcap-dev
+## Install procedure (tested Ubuntu 18.04 LTS)
+- Add GnuRadio 3.7 repo `sudo add-apt-repository ppa:gnuradio/gnuradio-releases-3.7`
+- Install GnuRadio `sudo apt install gnuradio`
+  - Additional dependencies (Python 2.7) should be automatically installed
+- Clone repo `git clone git@github.com:iu2frl/urgensat_app.git`
+- Open dir `cd urgensat_app`
+- Install Python requirements `pip install -r requirements.txt`
+- ...
 
 ## Features list
 ### General
-- [x] inserire logging degli eventi
-- [x] inserire logging opzionale dei pacchetti
-- [x] creare message handler
-- [x] modificare codifica/decodifica dei messaggi in modo che si basi su MessagePack https://msgpack.org/
-- [ ] convertire socket udp a tcp
-- [ ] creare io_controller per il controllo a distanza di attuatori e sensori
-- [ ] inserire avvio del core
-- [ ] creare versione full screen CLI
-- [ ] creare script di installazione
-- [ ] inserire la possibilità di inviare file
-- [ ] scrivere versione multithreading
+- [x] Add event logger
+- [x] Add optional packet logger
+- [x] Add message handler
+- [x] Change message encoding to comply with [MessagePack](https://msgpack.org/)
+- [x] Convert from UDP to TCP
+- [ ] Create `io_controller` to control remote devices
+- [ ] Automate core run
+- [ ] Create full-screen CLI version
+- [ ] Create install script
+- [ ] Add file send/receive capability
+- [ ] Create multi-thread version
 
 ### Command handler
-
-- [ ] inserire la gestione comando station_info
-- [ ] usare le regex per matcher i comandi speciali
-- [x] gestire eccezioni
+- [ ] Manage `station_info()` function
+- [ ] Use regex for special commands
+- [x] Manage exceptions
 
 ### Rx deamon
-- [x] inserire chiamata per il passaggio dei messaggi al MessageHandler
-- [x] gestire eccezioni
+- [x] Add handler to send messages to MessageHandler
+- [ ] Manage exceptions
